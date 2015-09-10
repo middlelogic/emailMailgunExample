@@ -1,23 +1,34 @@
 if (Meteor.isClient) {
-  // counter starts at 0
-  Session.setDefault('counter', 0);
 
-  Template.hello.helpers({
-    counter: function () {
-      return Session.get('counter');
-    }
-  });
-
-  Template.hello.events({
+  Template.sendEmailButton.events({
     'click button': function () {
-      // increment the counter when button is clicked
-      Session.set('counter', Session.get('counter') + 1);
+        Meteor.call('sendEmail',
+          'mike@example.com',
+          'postmaster@middlelogic.com',
+          'Hello from Meteor!',
+          'This is a test of Email.send.'
+        );
     }
   });
 }
 
 if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
+
+  Meteor.methods({
+    sendEmail: function (to, from, subject, text) {
+      check([to, from, subject, text], [String]);
+
+      // Let other method calls from the same client start running,
+      // without waiting for the email sending to complete.
+      this.unblock();
+
+      Email.send({
+        to: to,
+        from: from,
+        subject: subject,
+        text: text
+      });
+    }
   });
+
 }
