@@ -1,0 +1,11 @@
+{
+   "public": {},
+   "private": {
+        "mailgun": {
+              "host": "smtp.mailgun.org",
+              "username": "postmaster@middlelogic.com",
+              "password": "XXXXXXXXXXXXXXXXXXXXXXXX",
+              "port": 25
+        }
+   }
+}
